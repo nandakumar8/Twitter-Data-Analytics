@@ -1,0 +1,102 @@
+
+######## Author:Nandakumar.U ###########
+
+tweets<-read.csv("H:\\Desktop\\info vis\\week 6\\tweets.csv",stringsAsFactors=F,header=T)
+
+
+NYPD<-grepl('#NYPD',tweets$retweeted_status.text) 
+LAPD<-grepl('#LAPD',tweets$retweeted_status.text)
+FRI<-grepl('Fri',tweets$created_at)
+
+NYPD_FRI<-subset(tweets,FRI==TRUE & NYPD==TRUE)
+LAPD_FRI<-subset(tweets,FRI==TRUE & LAPD==TRUE)
+
+NYPD_FRI$retweeted_status.text
+NYPD_FRI$created_at
+
+LAPD_FRI$retweeted_status.text
+LAPD_FRI$created_at
+
+
+
+
+MON<-grepl('Mon',tweets$created_at)
+NYPD_MON<-subset(tweets,MON==TRUE & NYPD==TRUE)
+LAPD_MON<-subset(tweets,MON==TRUE & LAPD==TRUE)
+
+
+NYPD_MON$retweeted_status.text
+NYPD_MON$created_at
+
+LAPD_MON$retweeted_status.text
+LAPD_MON$created_at
+
+
+
+NYPD_FRI_C<-nrow(NYPD_FRI)
+LAPD_FRI_C<-nrow(LAPD_FRI)
+
+NYPD_MON_C<-nrow(NYPD_MON)
+LAPD_MON_C<-nrow(LAPD_MON)
+
+PD_MATRIX=matrix(c(NYPD_MON_C,NYPD_FRI_C,LAPD_MON_C,LAPD_FRI_C),nrow=2,ncol=2)
+PD_MATRIX
+colour<-c('red','blue')
+barplot(PD_MATRIX,beside=T,col=colour,main="No of retweets containing #NYPD and #LAPD",ylim=c(0,2000))
+legend("topleft",c("Monday","Friday"),cex=1.3,bty="n",fill=colors)
+##################################
+
+
+
+NY<-grepl('New York',tweets$user.location)
+
+NY_FOLLOW_G<-subset(tweets,NY==TRUE & tweets$user.followers_count>1000 )
+NY_FOLLOW_L<-subset(tweets,NY==TRUE & tweets$user.followers_count<1000 )
+
+
+NY_FOLLOW_G$user.location
+NY_FOLLOW_G$user.followers_count
+
+NY_FOLLOW_L$user.location
+NY_FOLLOW_L$user.followers_count
+
+LA<-grepl('Los Angeles',tweets$user.location)
+LA_FOLLOW_G<-subset(tweets,LA==TRUE & tweets$user.followers_count>1000 )
+LA_FOLLOW_L<-subset(tweets,LA==TRUE & tweets$user.followers_count<1000 )
+
+
+LA_FOLLOW_G$user.location
+LA_FOLLOW_G$user.followers_count
+
+LA_FOLLOW_L$user.location
+LA_FOLLOW_L$user.followers_count
+
+
+
+
+CI<-grepl('Chicago',tweets$user.location)
+CI_FOLLOW_G<-subset(tweets,CI==TRUE & tweets$user.followers_count>1000 )
+CI_FOLLOW_L<-subset(tweets,CI==TRUE & tweets$user.followers_count<1000 )
+
+CI_FOLLOW_G$user.location
+CI_FOLLOW_G$user.followers_count
+
+CI_FOLLOW_L$user.location
+CI_FOLLOW_L$user.followers_count
+
+
+NY_G_COUNT<-nrow(NY_FOLLOW_G)
+LA_G_COUNT<-nrow(LA_FOLLOW_G)
+CI_G_COUNT<-nrow(CI_FOLLOW_G)
+
+NY_L_COUNT<-nrow(NY_FOLLOW_L)
+LA_L_COUNT<-nrow(LA_FOLLOW_L)
+CI_L_COUNT<-nrow(CI_FOLLOW_L)
+
+FOLLOW_MATRIX=matrix(c(NY_G_COUNT,NY_L_COUNT,LA_G_COUNT,LA_L_COUNT,CI_G_COUNT,CI_L_COUNT),nrow=2,ncol=3)
+
+FOLLOW_MATRIX
+
+barplot(FOLLOW_MATRIX,beside=T,main="No.of followers below and above 1000",col=colour,ylim=c(0,2200))
+
+legend("topleft",c("Above 1000","Below 1000"),cex=1.3,bty="n",fill=colour)
